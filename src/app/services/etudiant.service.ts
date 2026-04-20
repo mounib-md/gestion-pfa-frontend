@@ -6,7 +6,7 @@ import { Etudiant, EtudiantRequest } from '../models/etudiant';
 @Injectable({ providedIn: 'root' })
 export class EtudiantService {
 
-  private apiUrl = 'http://localhost:8081/api/etudiants';
+  private apiUrl = 'https://api-pfa-backend.onrender.com/api/etudiants';
 
   constructor(private http: HttpClient) {}
 

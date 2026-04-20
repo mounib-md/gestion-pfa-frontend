@@ -6,7 +6,7 @@ import { Encadrant, EncadrantRequest } from '../models/encadrant';
 @Injectable({ providedIn: 'root' })
 export class EncadrantService {
 
-  private apiUrl = 'http://localhost:8081/api/encadrants';
+  private apiUrl = 'https://api-pfa-backend.onrender.com/api/encadrants';
 
   constructor(private http: HttpClient) {}
 

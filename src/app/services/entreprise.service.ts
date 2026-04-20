@@ -6,7 +6,7 @@ import { Entreprise, EntrepriseRequest } from '../models/entreprise';
 @Injectable({ providedIn: 'root' })
 export class EntrepriseService {
 
-  private apiUrl = 'http://localhost:8081/api/entreprises';
+  private apiUrl = 'https://api-pfa-backend.onrender.com/api/entreprises';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { PFA, PFARequest } from '../models/pfa';
 @Injectable({ providedIn: 'root' })
 export class PfaService {
 
-  private apiUrl = 'http://localhost:8081/api/pfas';
+  private apiUrl = 'https://api-pfa-backend.onrender.com/api/pfas';
 
   constructor(private http: HttpClient) {}
 
