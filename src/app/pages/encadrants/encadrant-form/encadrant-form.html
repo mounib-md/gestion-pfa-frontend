@@ -1,0 +1,85 @@
+<div class="max-w-2xl mx-auto px-4 py-8">
+
+      <div class="flex items-center gap-3 mb-6">
+        <a routerLink="/encadrants" class="text-gray-400 hover:text-gray-600">← Retour</a>
+        <h1 class="text-2xl font-bold text-gray-800">
+          {{ isEdit ? 'Modifier l\'encadrant' : 'Nouvel encadrant' }}
+        </h1>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <form (ngSubmit)="onSubmit()">
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
+              <input type="text" [(ngModel)]="form.nom" name="nom" required
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Prénom *</label>
+              <input type="text" [(ngModel)]="form.prenom" name="prenom" required
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+            <input type="email" [(ngModel)]="form.email" name="email" required
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+            <input type="text" [(ngModel)]="form.telephone" name="telephone"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+              <select [(ngModel)]="form.grade" name="grade"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300">
+                <option value="">-- Choisir --</option>
+                <option value="ASSISTANT">Assistant</option>
+                <option value="MAITRE_ASSISTANT">Maître Assistant</option>
+                <option value="MAITRE_CONFERENCE">Maître de Conférence</option>
+                <option value="PROFESSEUR">Professeur</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Quota max PFA</label>
+              <input type="number" [(ngModel)]="form.quotaMax" name="quotaMax" min="1" max="20"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Spécialité</label>
+              <input type="text" [(ngModel)]="form.specialite" name="specialite"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Département</label>
+              <input type="text" [(ngModel)]="form.departement" name="departement"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"/>
+            </div>
+          </div>
+
+          <div *ngIf="errorMessage" class="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+            {{ errorMessage }}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit"
+                    class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm font-medium">
+              {{ isEdit ? 'Modifier' : 'Créer' }}
+            </button>
+            <a routerLink="/encadrants" class="text-gray-500 hover:text-gray-700 text-sm font-medium">Annuler</a>
+          </div>
+
+        </form>
+      </div>
+
+    </div>

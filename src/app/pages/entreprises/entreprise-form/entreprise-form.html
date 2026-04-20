@@ -1,0 +1,118 @@
+<div class="max-w-2xl mx-auto px-4 py-8">
+
+      <div class="flex items-center gap-3 mb-6">
+        <a routerLink="/entreprises" class="text-gray-400 hover:text-gray-600">← Retour</a>
+        <h1 class="text-2xl font-bold text-gray-800">
+          {{ isEdit ? 'Modifier l\'entreprise' : 'Nouvelle entreprise' }}
+        </h1>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <form (ngSubmit)="onSubmit()">
+
+          <!-- Infos entreprise -->
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">Informations entreprise</p>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Nom *</label>
+            <input type="text" [(ngModel)]="form.nom" name="nom" required
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Secteur</label>
+              <input type="text" [(ngModel)]="form.secteur" name="secteur"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+              <input type="text" [(ngModel)]="form.telephone" name="telephone"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input type="email" [(ngModel)]="form.email" name="email"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Site web</label>
+            <input type="text" [(ngModel)]="form.siteWeb" name="siteWeb"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
+            <input type="text" [(ngModel)]="form.adresse" name="adresse"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Ville</label>
+              <input type="text" [(ngModel)]="form.ville" name="ville"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Pays</label>
+              <input type="text" [(ngModel)]="form.pays" name="pays"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+          </div>
+
+          <!-- Tuteur -->
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 border-t border-gray-100 pt-4">
+            Tuteur en entreprise
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Nom tuteur</label>
+              <input type="text" [(ngModel)]="form.nomTuteur" name="nomTuteur"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Prénom tuteur</label>
+              <input type="text" [(ngModel)]="form.prenomTuteur" name="prenomTuteur"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email tuteur</label>
+              <input type="email" [(ngModel)]="form.emailTuteur" name="emailTuteur"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Téléphone tuteur</label>
+              <input type="text" [(ngModel)]="form.telephoneTuteur" name="telephoneTuteur"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Fonction tuteur</label>
+            <input type="text" [(ngModel)]="form.fonctionTuteur" name="fonctionTuteur"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+          </div>
+
+          <div *ngIf="errorMessage" class="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+            {{ errorMessage }}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit"
+                    class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
+              {{ isEdit ? 'Modifier' : 'Créer' }}
+            </button>
+            <a routerLink="/entreprises" class="text-gray-500 hover:text-gray-700 text-sm font-medium">Annuler</a>
+          </div>
+
+        </form>
+      </div>
+
+    </div>

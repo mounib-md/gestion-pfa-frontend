@@ -1,0 +1,102 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+  <!-- Titre -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">Tableau de bord</h1>
+    <p class="text-gray-500 mt-1">Vue d'ensemble de la gestion des PFA</p>
+  </div>
+
+  <!-- Statistiques cliquables -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+    <a routerLink="/etudiants"
+       class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group">
+      <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+        <span class="text-blue-600 text-xl">👨‍🎓</span>
+      </div>
+      <div>
+        <p class="text-2xl font-bold text-gray-800">{{ nbEtudiants }}</p>
+        <p class="text-sm text-gray-500 group-hover:text-blue-600 transition-colors">Étudiants</p>
+      </div>
+    </a>
+
+    <a routerLink="/encadrants"
+       class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 hover:shadow-md hover:border-green-200 transition-all cursor-pointer group">
+      <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
+        <span class="text-green-600 text-xl">👨‍🏫</span>
+      </div>
+      <div>
+        <p class="text-2xl font-bold text-gray-800">{{ nbEncadrants }}</p>
+        <p class="text-sm text-gray-500 group-hover:text-green-600 transition-colors">Encadrants</p>
+      </div>
+    </a>
+
+    <a routerLink="/entreprises"
+       class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 hover:shadow-md hover:border-purple-200 transition-all cursor-pointer group">
+      <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+        <span class="text-purple-600 text-xl">🏢</span>
+      </div>
+      <div>
+        <p class="text-2xl font-bold text-gray-800">{{ nbEntreprises }}</p>
+        <p class="text-sm text-gray-500 group-hover:text-purple-600 transition-colors">Entreprises</p>
+      </div>
+    </a>
+
+    <a routerLink="/pfas"
+       class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex items-center gap-4 hover:shadow-md hover:border-orange-200 transition-all cursor-pointer group">
+      <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+        <span class="text-orange-600 text-xl">📋</span>
+      </div>
+      <div>
+        <p class="text-2xl font-bold text-gray-800">{{ nbPfas }}</p>
+        <p class="text-sm text-gray-500 group-hover:text-orange-600 transition-colors">PFA Total</p>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Stats PFA par statut -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">PFA par statut</h2>
+      <div class="space-y-3">
+        <a *ngFor="let stat of pfaStats | keyvalue"
+           [routerLink]="['/pfas']"
+           [queryParams]="{ statut: stat.key }"
+           class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer group">
+          <span [class]="getStatutBadgeClass(stat.key)"
+                class="px-2 py-1 rounded-full text-xs font-medium">
+            {{ stat.key }}
+          </span>
+          <span class="font-bold text-gray-700 group-hover:text-gray-900">{{ stat.value }}</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Accès rapides -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Accès rapides</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <a routerLink="/etudiants/nouveau"
+           class="flex items-center gap-2 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-blue-700 text-sm font-medium">
+          + Nouvel étudiant
+        </a>
+        <a routerLink="/encadrants/nouveau"
+           class="flex items-center gap-2 p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-green-700 text-sm font-medium">
+          + Nouvel encadrant
+        </a>
+        <a routerLink="/entreprises/nouveau"
+           class="flex items-center gap-2 p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors text-purple-700 text-sm font-medium">
+          + Nouvelle entreprise
+        </a>
+        <a routerLink="/pfas/nouveau"
+           class="flex items-center gap-2 p-3 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors text-orange-700 text-sm font-medium">
+          + Nouveau PFA
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</div>

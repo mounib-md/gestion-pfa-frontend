@@ -1,0 +1,140 @@
+<div class="max-w-2xl mx-auto px-4 py-8">
+
+      <div class="flex items-center gap-3 mb-6">
+        <a routerLink="/pfas" class="text-gray-400 hover:text-gray-600">← Retour</a>
+        <h1 class="text-2xl font-bold text-gray-800">
+          {{ isEdit ? 'Modifier le PFA' : 'Nouveau PFA' }}
+        </h1>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <form (ngSubmit)="onSubmit()">
+
+          <!-- Titre -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
+            <input type="text" [(ngModel)]="form.titre" name="titre" required
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"/>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea [(ngModel)]="form.description" name="description" rows="3"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"></textarea>
+          </div>
+
+          <!-- Type + Statut -->
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Type *</label>
+              <select [(ngModel)]="form.type" name="type" required
+                      (ngModelChange)="onTypeChange()"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+                <option value="">-- Choisir --</option>
+                <option value="ACADEMIQUE">Académique</option>
+                <option value="EN_ENTREPRISE">En entreprise</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Statut</label>
+              <select [(ngModel)]="form.statut" name="statut"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+                <option value="PROPOSE">Proposé</option>
+                <option value="VALIDE">Validé</option>
+                <option value="EN_COURS">En cours</option>
+                <option value="TERMINE">Terminé</option>
+                <option value="REFUSE">Refusé</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Année universitaire -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Année universitaire *</label>
+            <input type="text" [(ngModel)]="form.anneeUniversitaire" name="anneeUniversitaire"
+                   required placeholder="ex: 2024-2025"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"/>
+          </div>
+
+          <!-- Dates -->
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Date début</label>
+              <input type="date" [(ngModel)]="form.dateDebut" name="dateDebut"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"/>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Date fin</label>
+              <input type="date" [(ngModel)]="form.dateFin" name="dateFin"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"/>
+            </div>
+          </div>
+
+          <!-- Technologies -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Technologies</label>
+            <input type="text" [(ngModel)]="form.technologies" name="technologies"
+                   placeholder="ex: Angular, Spring Boot, MySQL"
+                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300"/>
+          </div>
+
+          <!-- Relations -->
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3 border-t border-gray-100 pt-4">
+            Associations
+          </p>
+
+          <!-- Étudiant -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Étudiant *</label>
+            <select [(ngModel)]="form.etudiantId" name="etudiantId" required
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+              <option [ngValue]="0">-- Choisir un étudiant --</option>
+              <option *ngFor="let e of etudiants" [ngValue]="e.id">
+                {{ e.prenom }} {{ e.nom }} — {{ e.niveau }}
+                {{ e.pfaTitre && !isEdit ? ' (déjà un PFA)' : '' }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Encadrant -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Encadrant</label>
+            <select [(ngModel)]="form.encadrantId" name="encadrantId"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+              <option [ngValue]="undefined">-- Aucun --</option>
+              <option *ngFor="let e of encadrants" [ngValue]="e.id">
+                {{ e.prenom }} {{ e.nom }}
+                ({{ e.nombrePfaEncadres }}/{{ e.quotaMax ?? '∞' }})
+              </option>
+            </select>
+          </div>
+
+          <!-- Entreprise — visible uniquement si type = EN_ENTREPRISE -->
+          <div class="mb-6" *ngIf="form.type === 'EN_ENTREPRISE'">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Entreprise</label>
+            <select [(ngModel)]="form.entrepriseId" name="entrepriseId"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-300">
+              <option [ngValue]="undefined">-- Aucune --</option>
+              <option *ngFor="let e of entreprises" [ngValue]="e.id">
+                {{ e.nom }} {{ e.ville ? '— ' + e.ville : '' }}
+              </option>
+            </select>
+          </div>
+
+          <div *ngIf="errorMessage" class="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+            {{ errorMessage }}
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" [disabled]="loading"
+                    class="bg-orange-600 text-white px-6 py-2 rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium disabled:opacity-50">
+              {{ loading ? 'Enregistrement...' : (isEdit ? 'Modifier' : 'Créer') }}
+            </button>
+            <a routerLink="/pfas" class="text-gray-500 hover:text-gray-700 text-sm font-medium">Annuler</a>
+          </div>
+
+        </form>
+      </div>
+
+    </div>

@@ -1,0 +1,72 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Entreprises</h1>
+          <p class="text-gray-500 text-sm mt-1">{{ entreprises.length }} entreprise(s) enregistrée(s)</p>
+        </div>
+        <a routerLink="/entreprises/nouveau"
+           class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
+          + Nouvelle entreprise
+        </a>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()"
+               placeholder="Rechercher par nom..."
+               class="w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-300"/>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Entreprise</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Secteur</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Ville</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Contact</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Tuteur</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr *ngFor="let e of entreprises" class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                    <span class="text-purple-600 text-xs font-bold">{{ e.nom[0] }}</span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-800 text-sm">{{ e.nom }}</p>
+                    <p class="text-gray-400 text-xs">{{ e.email || '-' }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ e.secteur || '-' }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                {{ e.ville ? e.ville + (e.pays ? ', ' + e.pays : '') : '-' }}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ e.telephone || '-' }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                <span *ngIf="e.nomTuteur">{{ e.prenomTuteur }} {{ e.nomTuteur }}</span>
+                <span *ngIf="!e.nomTuteur" class="text-gray-400">-</span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <a [routerLink]="['/entreprises/modifier', e.id]"
+                     class="text-blue-600 hover:text-blue-800 text-xs font-medium">Modifier</a>
+                  <button (click)="delete(e.id!)"
+                          class="text-red-500 hover:text-red-700 text-xs font-medium">Supprimer</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="entreprises.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-gray-400 text-sm">
+                Aucune entreprise trouvée
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>

@@ -1,0 +1,81 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Étudiants</h1>
+          <p class="text-gray-500 text-sm mt-1">{{ etudiants.length }} étudiant(s) enregistré(s)</p>
+        </div>
+        <a routerLink="/etudiants/nouveau"
+           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+          + Nouvel étudiant
+        </a>
+      </div>
+
+      <!-- Recherche -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()"
+               placeholder="Rechercher par nom ou prénom..."
+               class="w-full border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"/>
+      </div>
+
+      <!-- Tableau -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Étudiant</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Email</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Niveau</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Groupe</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">PFA</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr *ngFor="let e of etudiants" class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-600 text-xs font-bold">
+                      {{ e.prenom[0] }}{{ e.nom[0] }}
+                    </span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-800 text-sm">{{ e.prenom }} {{ e.nom }}</p>
+                    <p class="text-gray-400 text-xs">{{ e.numInscription }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ e.email }}</td>
+              <td class="px-6 py-4">
+                <span class="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">{{ e.niveau }}</span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ e.groupe || '-' }}</td>
+              <td class="px-6 py-4">
+                <span *ngIf="e.pfaTitre" class="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full">
+                  {{ e.pfaTitre | slice:0:25 }}...
+                </span>
+                <span *ngIf="!e.pfaTitre" class="bg-gray-50 text-gray-400 text-xs px-2 py-1 rounded-full">
+                  Pas de PFA
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <a [routerLink]="['/etudiants/modifier', e.id]"
+                     class="text-blue-600 hover:text-blue-800 text-xs font-medium">Modifier</a>
+                  <button (click)="delete(e.id!)"
+                          class="text-red-500 hover:text-red-700 text-xs font-medium">Supprimer</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="etudiants.length === 0">
+              <td colspan="6" class="px-6 py-12 text-center text-gray-400 text-sm">
+                Aucun étudiant trouvé
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>

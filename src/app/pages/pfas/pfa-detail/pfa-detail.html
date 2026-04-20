@@ -1,0 +1,123 @@
+<div class="max-w-4xl mx-auto px-4 py-8" *ngIf="pfa">
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-6">
+        <a routerLink="/pfas" class="text-gray-400 hover:text-gray-600">← Retour</a>
+        <span [class]="getStatutClass(pfa.statut!)"
+              class="text-xs px-3 py-1 rounded-full font-medium">{{ pfa.statut }}</span>
+      </div>
+
+      <h1 class="text-2xl font-bold text-gray-800 mb-6">{{ pfa.titre }}</h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Infos principales -->
+        <div class="lg:col-span-2 space-y-4">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-800 mb-3">Informations</h2>
+            <p class="text-gray-600 text-sm mb-4">{{ pfa.description }}</p>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div><span class="text-gray-400">Type :</span> <span class="font-medium">{{ pfa.type }}</span></div>
+              <div><span class="text-gray-400">Année :</span> <span class="font-medium">{{ pfa.anneeUniversitaire }}</span></div>
+              <div><span class="text-gray-400">Début :</span> <span class="font-medium">{{ pfa.dateDebut || '-' }}</span></div>
+              <div><span class="text-gray-400">Fin :</span> <span class="font-medium">{{ pfa.dateFin || '-' }}</span></div>
+              <div class="col-span-2"><span class="text-gray-400">Technologies :</span> <span class="font-medium">{{ pfa.technologies || '-' }}</span></div>
+            </div>
+          </div>
+
+          <!-- Personnes -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-800 mb-3">Personnes</h2>
+            <div class="space-y-3 text-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span class="text-blue-600 text-xs">ET</span>
+                </div>
+                <div>
+                  <p class="font-medium">{{ pfa.etudiantPrenom }} {{ pfa.etudiantNom }}</p>
+                  <p class="text-gray-400 text-xs">{{ pfa.etudiantEmail }}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3" *ngIf="pfa.encadrantNom">
+                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                  <span class="text-green-600 text-xs">EN</span>
+                </div>
+                <div>
+                  <p class="font-medium">{{ pfa.encadrantPrenom }} {{ pfa.encadrantNom }}</p>
+                  <p class="text-gray-400 text-xs">Encadrant</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3" *ngIf="pfa.entrepriseNom">
+                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span class="text-purple-600 text-xs">EP</span>
+                </div>
+                <div>
+                  <p class="font-medium">{{ pfa.entrepriseNom }}</p>
+                  <p class="text-gray-400 text-xs">Entreprise</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-4">
+
+          <!-- Note -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-800 mb-3">Note</h2>
+            <p class="text-3xl font-bold text-blue-600 mb-3">
+              {{ pfa.note !== null && pfa.note !== undefined ? pfa.note + '/20' : '-' }}
+            </p>
+            <div *ngIf="pfa.statut === 'TERMINE'" class="space-y-2">
+              <input type="number" [(ngModel)]="noteValue" min="0" max="20" step="0.5"
+                     placeholder="Note /20"
+                     class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"/>
+              <button (click)="noter()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm hover:bg-blue-700">
+                Attribuer la note
+              </button>
+            </div>
+          </div>
+
+          <!-- Changer statut -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <h2 class="font-semibold text-gray-800 mb-3">Changer le statut</h2>
+            <div class="space-y-2">
+              <button *ngIf="pfa.statut === 'PROPOSE'" (click)="valider()"
+                      class="w-full bg-blue-50 text-blue-700 py-2 rounded-lg text-sm hover:bg-blue-100">
+                Valider
+              </button>
+              <button *ngIf="pfa.statut === 'VALIDE'" (click)="changerStatut('EN_COURS')"
+                      class="w-full bg-purple-50 text-purple-700 py-2 rounded-lg text-sm hover:bg-purple-100">
+                Mettre en cours
+              </button>
+              <button *ngIf="pfa.statut === 'EN_COURS'" (click)="changerStatut('TERMINE')"
+                      class="w-full bg-green-50 text-green-700 py-2 rounded-lg text-sm hover:bg-green-100">
+                Marquer terminé
+              </button>
+              <button *ngIf="pfa.statut === 'PROPOSE'" (click)="changerStatut('REFUSE')"
+                      class="w-full bg-red-50 text-red-700 py-2 rounded-lg text-sm hover:bg-red-100">
+                Refuser
+              </button>
+            </div>
+          </div>
+
+          <!-- Affecter encadrant -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6" *ngIf="!pfa.encadrantNom">
+            <h2 class="font-semibold text-gray-800 mb-3">Affecter encadrant</h2>
+            <select [(ngModel)]="selectedEncadrantId"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-2">
+              <option value="">-- Choisir --</option>
+              <option *ngFor="let e of encadrants" [value]="e.id">
+                {{ e.prenom }} {{ e.nom }}
+              </option>
+            </select>
+            <button (click)="affecterEncadrant()"
+                    class="w-full bg-green-600 text-white py-2 rounded-lg text-sm hover:bg-green-700">
+              Affecter
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>

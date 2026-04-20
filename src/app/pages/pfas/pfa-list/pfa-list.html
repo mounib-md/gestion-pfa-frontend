@@ -1,0 +1,92 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">PFA</h1>
+          <p class="text-gray-500 text-sm mt-1">{{ pfas.length }} PFA enregistré(s)</p>
+        </div>
+        <a routerLink="/pfas/nouveau"
+           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+          + Nouveau PFA
+        </a>
+      </div>
+
+      <!-- Filtres -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6 flex gap-4 flex-wrap">
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearch()"
+               placeholder="Rechercher par titre..."
+               class="flex-1 min-w-48 border border-gray-200 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"/>
+        <select [(ngModel)]="selectedStatut" (change)="onFilterStatut()"
+                class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+          <option value="">Tous les statuts</option>
+          <option value="PROPOSE">Proposé</option>
+          <option value="VALIDE">Validé</option>
+          <option value="EN_COURS">En cours</option>
+          <option value="TERMINE">Terminé</option>
+          <option value="REFUSE">Refusé</option>
+        </select>
+      </div>
+
+      <!-- Tableau -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table class="w-full">
+          <thead class="bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Titre</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Étudiant</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Encadrant</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Type</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Statut</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Note</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr *ngFor="let p of pfas" class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4">
+                <p class="font-medium text-gray-800 text-sm">{{ p.titre | slice:0:40 }}</p>
+                <p class="text-gray-400 text-xs">{{ p.anneeUniversitaire }}</p>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                {{ p.etudiantPrenom }} {{ p.etudiantNom }}
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                {{ p.encadrantPrenom ? p.encadrantPrenom + ' ' + p.encadrantNom : '-' }}
+              </td>
+              <td class="px-6 py-4">
+                <span [class]="p.type === 'EN_ENTREPRISE' ? 'bg-purple-50 text-purple-700' : 'bg-blue-50 text-blue-700'"
+                      class="text-xs px-2 py-1 rounded-full">
+                  {{ p.type === 'EN_ENTREPRISE' ? 'Entreprise' : 'Académique' }}
+                </span>
+              </td>
+              <td class="px-6 py-4">
+                <span [class]="getStatutClass(p.statut!)"
+                      class="text-xs px-2 py-1 rounded-full font-medium">
+                  {{ p.statut }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-gray-600">
+                {{ p.note !== null && p.note !== undefined ? p.note + '/20' : '-' }}
+              </td>
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-2">
+                  <a [routerLink]="['/pfas', p.id]"
+                     class="text-blue-600 hover:text-blue-800 text-xs font-medium">Détail</a>
+                  <a [routerLink]="['/pfas/modifier', p.id]"
+                     class="text-green-600 hover:text-green-800 text-xs font-medium">Modifier</a>
+                  <button (click)="delete(p.id!)"
+                          class="text-red-500 hover:text-red-700 text-xs font-medium">Supprimer</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="pfas.length === 0">
+              <td colspan="7" class="px-6 py-12 text-center text-gray-400 text-sm">
+                Aucun PFA trouvé
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
